@@ -12,7 +12,6 @@ tk.update()
 t1=time.time()
 
 
-
 class Human:
     def __init__(self, canvas, color, speed):
         self.canvas=canvas
@@ -114,21 +113,33 @@ class Hunter:
             time.sleep(1)
             t2 = time.time()
             ft="You lasted %s seconds" % round(t2-t1)
-            canvas.create_text(250, 250, text="Tag!", fill='dark blue', font=('Times', 30))
-            canvas.create_text(250, 285, text=ft, fill='dark blue', font=('Times', 18))
-##            canvas.create_text(250, 285+28, text="Press 'r' to restart.", fill='dark blue', font=('Times', 18))
+            self.e=canvas.create_text(250, 250, text="Tag!", fill='dark blue', font=('Times', 30))
+            self.f=canvas.create_text(250, 285, text=ft, fill='dark blue', font=('Times', 18))
 
-##def restart(event):
-##    hunter.game_over = False
     
             
 human = Human(canvas, 'blue', 3)
 hunter = Hunter(human, canvas, 'black', 2.2)
 
+def rst():
+    global human, hunter, some_bool, t1
+    canvas.delete(human.id, hunter.id, hunter.e, hunter.f)
+    del hunter
+    del human
+    t1=time.time()
+    human = Human(canvas, 'blue', 3)
+    hunter = Hunter(human, canvas, 'black', 2.2)
+    start=0
+    btn.place_forget()
+    some_bool=False
+    
+
+btn=Button(tk, text="Restart", font=('Times', 12), activebackground='Blue', activeforeground='White', command=rst)
 
 
 start = 0
-##canvas.bind_all('<KeyPress-r>', restart)
+some_bool=False
+
 
 while 1:
     if hunter.game_over == False:
@@ -138,6 +149,12 @@ while 1:
     tk.update_idletasks()
     tk.update()
     if start == 0:
-        time.sleep(1.5)
+        time.sleep(1)
         start += 1
     time.sleep(0.01)
+    if hunter.game_over==True and some_bool==False:
+        btn.pack()
+        btn.place(x=250*(5/6), y=300)
+        some_bool=True
+
+
